@@ -3,17 +3,17 @@ import ReactDOM, { findDOMNode } from 'react-dom';
 import PropTypes from 'prop-types';
 
 const KEYCODES = {
-  ESCAPE: 27
+  ESCAPE: 27,
 };
 
 export default class Portal extends React.Component {
-  constructor() {
-    super();
-    this.state = { active: false };
-    this.handleWrapperClick = this.handleWrapperClick.bind(this);
+  constructor(props) {
+    super(props);
+
     this.closePortal = this.closePortal.bind(this);
     this.handleOutsideMouseClick = this.handleOutsideMouseClick.bind(this);
     this.handleKeydown = this.handleKeydown.bind(this);
+
     this.portal = null;
     this.node = null;
   }
@@ -27,30 +27,13 @@ export default class Portal extends React.Component {
       document.addEventListener('mouseup', this.handleOutsideMouseClick);
       document.addEventListener('touchstart', this.handleOutsideMouseClick);
     }
-
-    if (this.props.isOpen) {
-      this.openPortal();
-    }
   }
 
-  componentWillReceiveProps(newProps) {
-    // portal's 'is open' state is handled through the prop isOpen
-    if (typeof newProps.isOpen !== 'undefined') {
-      if (newProps.isOpen) {
-        if (this.state.active) {
-          this.renderPortal(newProps);
-        } else {
-          this.openPortal(newProps);
-        }
-      }
-      if (!newProps.isOpen && this.state.active) {
-        this.closePortal();
-      }
-    }
-
-    // portal handles its own 'is open' state
-    if (typeof newProps.isOpen === 'undefined' && this.state.active) {
-      this.renderPortal(newProps);
+  componentDidUpdate(prevProps) {
+    if (this.props.isOpen) {
+      this.renderPortal();
+    } else if (prevProps.isOpen) {
+      this.closePortal();
     }
   }
 
@@ -67,46 +50,8 @@ export default class Portal extends React.Component {
     this.closePortal(true);
   }
 
-  handleWrapperClick(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    if (this.state.active) {
-      return;
-    }
-    this.openPortal();
-  }
-
-  openPortal(props = this.props) {
-    this.setState({ active: true });
-    this.renderPortal(props, true);
-  }
-
-  closePortal(isUnmounted = false) {
-    const resetPortalState = () => {
-      if (this.node) {
-        ReactDOM.unmountComponentAtNode(this.node);
-        document.body.removeChild(this.node);
-      }
-      this.portal = null;
-      this.node = null;
-      if (isUnmounted !== true) {
-        this.setState({ active: false });
-      }
-    };
-
-    if (this.state.active) {
-      if (this.props.beforeClose) {
-        this.props.beforeClose(this.node, resetPortalState);
-      } else {
-        resetPortalState();
-      }
-
-      this.props.onClose();
-    }
-  }
-
   handleOutsideMouseClick(e) {
-    if (!this.state.active) {
+    if (!this.props.isOpen) {
       return;
     }
 
@@ -116,30 +61,35 @@ export default class Portal extends React.Component {
     }
 
     e.stopPropagation();
-    this.closePortal();
+    this.props.onClose();
   }
 
   handleKeydown(e) {
-    if (e.keyCode === KEYCODES.ESCAPE && this.state.active) {
-      this.closePortal();
+    if (e.keyCode === KEYCODES.ESCAPE && this.props.isOpen) {
+      this.props.onClose();
     }
   }
 
-  renderPortal(props, isOpening) {
+  closePortal() {
+    if (this.node) {
+      ReactDOM.unmountComponentAtNode(this.node);
+      document.body.removeChild(this.node);
+    }
+    this.portal = null;
+    this.node = null;
+  }
+
+  renderPortal() {
     if (!this.node) {
       this.node = document.createElement('div');
       document.body.appendChild(this.node);
     }
 
-    if (isOpening) {
-      this.props.onOpen(this.node);
-    }
+    let children = this.props.children;
 
-    let children = props.children;
-    // https://gist.github.com/jimfb/d99e0678e9da715ccf6454961ef04d1b
-    if (typeof props.children.type === 'function') {
-      children = React.cloneElement(props.children, {
-        closePortal: this.closePortal
+    if (typeof children.type === 'function') {
+      children = React.cloneElement(children, {
+        closePortal: this.closePortal,
       });
     }
 
@@ -152,38 +102,21 @@ export default class Portal extends React.Component {
   }
 
   render() {
-    if (this.props.openByClickOn) {
-      return React.cloneElement(this.props.openByClickOn, {
-        onClick: this.handleWrapperClick
-      });
-    }
     return null;
   }
 }
 
 Portal.propTypes = {
   children: PropTypes.element.isRequired,
-  openByClickOn: PropTypes.element,
   closeOnEsc: PropTypes.bool,
   closeOnOutsideClick: PropTypes.bool,
   isOpen: PropTypes.bool,
-  isOpened: (props, propName, componentName) => {
-    if (typeof props[propName] !== 'undefined') {
-      return new Error(
-        `Prop \`${propName}\` supplied to \`${componentName}\` was renamed to \`isOpen\`.
-          https://github.com/tajo/react-portal/pull/82.`
-      );
-    }
-    return null;
-  },
-  onOpen: PropTypes.func,
   onClose: PropTypes.func,
-  beforeClose: PropTypes.func,
-  onUpdate: PropTypes.func
+  onUpdate: PropTypes.func,
 };
 
 Portal.defaultProps = {
   onOpen: () => {},
   onClose: () => {},
-  onUpdate: () => {}
+  onUpdate: () => {},
 };
