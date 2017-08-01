@@ -10,9 +10,9 @@ export default class Portal extends React.Component {
   constructor(props) {
     super(props);
 
-    this.closePortal = this.closePortal.bind(this);
-    this.handleOutsideMouseClick = this.handleOutsideMouseClick.bind(this);
-    this.handleKeydown = this.handleKeydown.bind(this);
+    this.closePortal = ::this.closePortal;
+    this.handleOutsideMouseClick = ::this.handleOutsideMouseClick;
+    this.handleKeydown = ::this.handleKeydown;
 
     this.portal = null;
     this.node = null;
@@ -59,7 +59,6 @@ export default class Portal extends React.Component {
     if (root.contains(e.target) || (e.button && e.button !== 0)) {
       return;
     }
-
     e.stopPropagation();
     this.props.onClose();
   }
