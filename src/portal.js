@@ -115,7 +115,6 @@ Portal.propTypes = {
 };
 
 Portal.defaultProps = {
-  onOpen: () => {},
   onClose: () => {},
   onUpdate: () => {},
 };

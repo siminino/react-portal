@@ -13,7 +13,7 @@
     "type": "git",
     "url": "https://github.com/siminino/react-portal"
   },
-  "author": "Victor Arêas <simi.areas@gmail.com> forked from Vojtech Miksu <vojtech@miksu.cz>",
+  "author": "Victor Arêas <victor.oliveira.ti@gmail.com> forked from Vojtech Miksu <vojtech@miksu.cz>",
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.example.js",

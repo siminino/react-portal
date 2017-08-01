@@ -1,8 +1,9 @@
-React-portal
+React-portal-stateless
 ============
-[![npm version](https://img.shields.io/npm/v/react-portal.svg?style=flat-square)](https://www.npmjs.com/package/react-portal)
-[![npm downloads](https://img.shields.io/npm/dm/react-portal.svg?style=flat-square)](https://www.npmjs.com/package/react-portal)
-[![Build Status](https://travis-ci.org/tajo/react-portal.svg?branch=master)](https://travis-ci.org/tajo/react-portal)
+[![npm version](https://img.shields.io/npm/v/react-portal.svg?style=flat-square)](https://www.npmjs.com/package/react-portal-stateless)
+[![npm downloads](https://img.shields.io/npm/dm/react-portal.svg?style=flat-square)](https://www.npmjs.com/package/react-portal-stateless)
+
+This Project is a fork of [React Portal](https://github.com/tajo/react-portal) that implement Stateless version of it.
 
 > Struggling with modals, lightboxes or loading bars in React? React-portal creates a new top-level React tree and injects its child into it. That's necessary for proper styling (especially positioning).
 
@@ -47,17 +48,37 @@ import ReactDOM from 'react-dom';
 import Portal from 'react-portal';
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isPortalOpen: true
+    };
+  }
+
+  onClose() {
+    this.setState({
+      isPortalOpen: false
+    });
+  }
+
+  onOpen() {
+    this.setState({
+      isPortalOpen: true
+    });
+  }
 
   render() {
-    const button1 = <button>Open portal with pseudo modal</button>;
-
     return (
-      <Portal closeOnEsc closeOnOutsideClick openByClickOn={button1}>
-        <PseudoModal>
-          <h2>Pseudo Modal</h2>
-          <p>This react component is appended to the document body.</p>
-        </PseudoModal>
-      </Portal>
+      <div>
+        <button onClick={() => this.onOpen}>Open Portal</button>
+        <Portal isOpen={this.state.isPortalOpen} closeOnEsc closeOnOutsideClick onClose={() => this.onClose}>
+          <PseudoModal>
+            <h2>Pseudo Modal</h2>
+            <p>This react component is appended to the document body.</p>
+          </PseudoModal>
+        </Portal>
+      </div>
     );
   }
 
@@ -85,30 +106,16 @@ ReactDOM.render(<App />, document.getElementById('react-body'));
 #### children : ReactElement
 The portal expects one child (`<Portal><Child ... /></Portal>`) that will be ported.
 
-### One of these two required
-
-#### isOpened : bool
-*Renaming to `isOpen` is going to be released soon with the V4.*
-
-If true, the portal is open. If false, the portal is closed. It's up to you to take care of the closing (aka taking care of the state). Don't use this prop if you want to make your life easier. Use openByClickOn instead!
-
-#### openByClickOn : ReactElement
-The second way how to open the portal. This element will be rendered by the portal immediately
-with `onClick` handler that triggers portal opening. **How to close the portal then?** The portal provides its ported child with a callback `this.props.closePortal`. Or you can use built-in portal closing methods (closeOnEsc, ... more below). Notice that you don't have to deal with the open/close state (like when using the `isOpened` prop).
-
 ### Optional
+
+#### isOpen : bool
+If true, the portal is open. If false, the portal is closed. It's up to you to take care of the closing (aka taking care of the state). Don't use this prop if you want to make your life easier. Use openByClickOn instead!
 
 #### closeOnEsc: bool
 If true, the portal can be closed by the key ESC.
 
 #### closeOnOutsideClick: bool
 If true, the portal can be closed by the outside mouse click.
-
-#### onOpen: func(DOMNode)
-This callback is called when the portal is opened and rendered (useful for animating the DOMNode).
-
-#### beforeClose: func(DOMNode, removeFromDOM)
-This callback is called when the closing event is triggered but it prevents normal removal from the DOM. So, you can do some DOMNode animation first and then call removeFromDOM() that removes the portal from DOM.
 
 #### onClose: func
 This callback is called when the portal closes and after beforeClose.
@@ -140,22 +147,7 @@ also need an access to `this.props.closePortal()`? You can't just use `{this.pro
 
 #### Open modal programmatically
 
-Sometimes you need to open your portal (e.g. modal) automatically. There is no button to click on. No problem, because the portal has the `isOpened` prop, so you can just set it to `true` or `false`. However, then it's completely up to you to take care about the portal closing (ESC, outside click, no `this.props.closePortal` callback...).
-
-However, there is a nice trick how to make this happen even without `isOpened`:
-
-```jsx
-<Portal ref="myPortal">
-  <PseudoModal title="My modal">
-    Modal content
-  </PseudoModal>
-</Portal>
-```
-
-```jsx
-this.refs.myPortal.openPortal()
-// opens the portal, yay!
-```
+Sometimes you need to open your portal (e.g. modal) automatically. There is no button to click on. No problem, because the portal has the `isOpen` prop, so you can just set it to `true` or `false`.
 
 ## Contribution
 
@@ -175,8 +167,11 @@ open http://localhost:3000
 npm test
 ```
 
-## Credits
+## Credits (Forked from)
 
 Inspired by the talk [React.js Conf 2015 - Hype!, Ryan Florence](https://www.youtube.com/watch?v=z5e7kWSHWTg)
 
 Vojtech Miksu 2015, [miksu.cz](https://miksu.cz), [@vmiksu](https://twitter.com/vmiksu)
+
+### Credits
+Victor Arêas 2017
