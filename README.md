@@ -1,7 +1,7 @@
 React-portal-stateless
 ============
-[![npm version](https://img.shields.io/npm/v/react-portal.svg?style=flat-square)](https://www.npmjs.com/package/react-portal-stateless)
-[![npm downloads](https://img.shields.io/npm/dm/react-portal.svg?style=flat-square)](https://www.npmjs.com/package/react-portal-stateless)
+[![npm version](https://img.shields.io/npm/v/react-portal-stateless.svg?style=flat-square)](https://www.npmjs.com/package/react-portal-stateless)
+[![npm downloads](https://img.shields.io/npm/dm/react-portal-stateless.svg?style=flat-square)](https://www.npmjs.com/package/react-portal-stateless)
 
 This Project is a fork of [React Portal](https://github.com/tajo/react-portal) that implement Stateless version of it.
 
