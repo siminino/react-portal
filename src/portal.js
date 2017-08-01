@@ -27,9 +27,15 @@ export default class Portal extends React.Component {
       document.addEventListener('mouseup', this.handleOutsideMouseClick);
       document.addEventListener('touchstart', this.handleOutsideMouseClick);
     }
+
+    this.componentShouldRenderPortal();
   }
 
   componentDidUpdate(prevProps) {
+    this.componentShouldRenderPortal(prevProps);
+  }
+
+  componentShouldRenderPortal(prevProps = {}) {
     if (this.props.isOpen) {
       this.renderPortal();
     } else if (prevProps.isOpen) {
