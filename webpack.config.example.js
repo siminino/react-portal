@@ -2,7 +2,7 @@ var path = require("path");
 
 module.exports = {
   entry: [
-    "./examples/main.js"
+    "./examples/index.js"
   ],
   output: {
     path: __dirname,
@@ -15,17 +15,17 @@ module.exports = {
     contentBase: "./"
   },
   resolve: {
-    extensions: [ "", ".js", ".jsx" ],
-    fallback: path.join(__dirname, "node_modules")
+    extensions: [ ".js", ".jsx" ],
+    modules: [ path.join(__dirname, "node_modules") ]
   },
   resolveLoader: {
-    root: path.join(__dirname, "node_modules")
+    modules: [ path.join(__dirname, "node_modules") ]
   },
   module: {
     loaders: [
       {
         exclude: /node_modules/,
-        loader: "babel"
+        loader: "babel-loader"
       },
       {
         test: /\.json$/,

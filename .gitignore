@@ -3,6 +3,7 @@ build
 npm-debug.log
 lib
 es
+dist
 
 *.swp
 *.swo
