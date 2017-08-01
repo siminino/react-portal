@@ -17,7 +17,7 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.example.js",
-    "build": "npm run build-es && npm run build-cjs",
+    "build": "npm run build:dist && npm run build:lib",
     "build:dist": "rimraf dist && webpack --config webpack.config.dist.js --optimize-minimize",
     "build:lib": "babel src/ -d lib/",
     "lint": "eslint webpack.config.dist.js src/**/*.js",
