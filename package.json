@@ -16,7 +16,7 @@
   "author": "Vojtech Miksu <vojtech@miksu.cz>",
   "license": "MIT",
   "scripts": {
-    "run": "webpack-dev-server --config webpack.config.example.js",
+    "start": "webpack-dev-server --config webpack.config.example.js",
     "build": "npm run build-es && npm run build-cjs",
     "build:dist": "rimraf dist && webpack --config webpack.config.dist.js --optimize-minimize",
     "build:lib": "babel src/ -d lib/",
