@@ -1,6 +1,6 @@
 {
-  "name": "react-portal",
-  "version": "3.0.0",
+  "name": "react-portal-stateless",
+  "version": "1.0.0",
   "description": "React component for transportation of modals, lightboxes, loading bars... to document.body",
   "main": "lib/portal.js",
   "files": [
@@ -11,9 +11,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/tajo/react-portal"
+    "url": "https://github.com/siminino/react-portal"
   },
-  "author": "Vojtech Miksu <vojtech@miksu.cz>",
+  "author": "Victor Arêas <simi.areas@gmail.com> forked from Vojtech Miksu <vojtech@miksu.cz>",
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.example.js",
