@@ -88,7 +88,7 @@ export default class Portal extends React.Component {
 
     if (typeof children.type === 'function') {
       children = React.cloneElement(children, {
-        closePortal: this.closePortal,
+        closePortal: this.props.onClose,
       });
     }
 
