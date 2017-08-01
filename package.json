@@ -2,14 +2,12 @@
   "name": "react-portal",
   "version": "3.0.0",
   "description": "React component for transportation of modals, lightboxes, loading bars... to document.body",
-  "main": "lib/index.js",
-  "module": "es/index.js",
-  "jsnext:main": "es/index.js",
+  "main": "lib/portal.js",
   "files": [
     "*.md",
     "LICENSE",
     "lib",
-    "es"
+    "dist"
   ],
   "repository": {
     "type": "git",
@@ -18,14 +16,13 @@
   "author": "Vojtech Miksu <vojtech@miksu.cz>",
   "license": "MIT",
   "scripts": {
+    "run": "webpack-dev-server --config webpack.config.example.js",
     "build": "npm run build-es && npm run build-cjs",
-    "build-es": "babel ./src --out-dir ./es",
-    "build-cjs": "BABEL_ENV=commonjs babel ./src --out-dir ./lib",
-    "build:examples": "cross-env NODE_ENV=production webpack",
-    "prepublish": "cross-env NODE_ENV=production npm run build",
-    "lint": "eslint webpack.config.js src/**/*.js",
-    "prettier": "prettier --single-quote --write \"{webpack.config.js,{src,examples}/**/*.js}\"",
-    "test": "cross-env BABEL_ENV=commonjs jest"
+    "build:dist": "rimraf dist && webpack --config webpack.config.dist.js --optimize-minimize",
+    "build:lib": "babel src/ -d lib/",
+    "lint": "eslint webpack.config.dist.js src/**/*.js",
+    "watch": "babel -d lib/ src/ --watch",
+    "prepublish": "npm run build"
   },
   "tags": [
     "react"
@@ -44,10 +41,10 @@
     "babel-core": "^6.8.0",
     "babel-eslint": "^7.2.3",
     "babel-loader": "^7.1.1",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
+    "babel-preset-stage-0": "^6.24.1",
     "cross-env": "^5.0.1",
     "enzyme": "^2.3.0",
     "eslint": "^4.3.0",
@@ -60,10 +57,10 @@
     "rimraf": "^2.5.0",
     "sinon": "^2.4.1",
     "tween.js": "^16.3.1",
-    "webpack": "^3.4.1"
+    "webpack": "^3.4.1",
+    "webpack-dev-server": "^2.6.1"
   },
   "dependencies": {
-    "prop-types": "^15.5.8",
-    "webpack-dev-server": "^2.6.1"
+    "prop-types": "^15.5.8"
   }
 }
