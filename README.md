@@ -14,14 +14,12 @@ This Project is a fork of [React Portal](https://github.com/tajo/react-portal) t
 ## Features
 
 - transports its child into a new React component and appends it to the **document.body** (creates a new independent React tree)
-- can be opened by the prop **isOpened**
-- can be opened after a click on an element that you pass through the prop **openByClickOn** (and then it takes care of the open/close state)
+- can be opened by the prop **isOpen**
 - doesn't leave any mess in DOM after closing
 - provides its child with **this.props.closePortal** callback
 - provides **close on ESC** and **close on outside mouse click** out of the box
 - supports absolute positioned components (great for tooltips)
 - **no dependencies**
-- **fully covered by tests**
 
 ## Demo
 
